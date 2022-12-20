@@ -32,6 +32,7 @@ func main() {
 		separators = append(separators, detectedSeparators...)
 		separators = append(separators, []string{"|", ",", ";", "_", "-", "/", "\n", "+", ":"}...)
 	}
+	separators = uniqueSlice(separators)
 
 	// Used variables
 	fmt.Println(strings.Repeat(".", 80))
