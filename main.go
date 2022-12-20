@@ -30,7 +30,7 @@ func main() {
 	detectedSeparators := re.FindAllString(data, -1)
 	if separators.IsEmpty() {
 		separators = append(separators, detectedSeparators...)
-		separators = append(separators, []string{" ", "|", ",", ";", "_", "-", "/", "\t", "\n", "\r", "+", ":"}...)
+		separators = append(separators, []string{"|", ",", ";", "_", "-", "/", "\n", "+", ":"}...)
 	}
 
 	// Used variables
