@@ -8,7 +8,10 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 )
+
+const CLR = "\033[1A\033[K"
 
 func main() {
 	var hash string
@@ -16,18 +19,18 @@ func main() {
 	var separators flagSlice
 	flag.StringVar(&hash, "hash", "", "target hash to crack")
 	flag.StringVar(&data, "data", "", "data possibly used to hash")
-	flag.Var(&separators, "separators", "possible separator")
+	flag.Var(&separators, "sep", "possible separator")
 	flag.Parse()
 
 	if hash == "" || data == "" {
-		log.Fatalf("Usage:\n\t./hashguess -hash='90b76b4e' -data='firetruck'\n")
+		log.Fatalf("Usage:\n\t./hashguess -hash='90b76b4e' -data='firetruck' -sep=','\n")
 	}
 
 	re := regexp.MustCompile(`[^a-zA-Z0-9]`)
 	detectedSeparators := re.FindAllString(data, -1)
 	if separators.IsEmpty() {
 		separators = append(separators, detectedSeparators...)
-		separators = append(separators, []string{" ", "|", ",", ";", "_", "-", "/", "\t", "\n", "\r"}...)
+		separators = append(separators, []string{" ", "|", ",", ";", "_", "-", "/", "\t", "\n", "\r", "+", ":"}...)
 	}
 
 	// Used variables
@@ -38,6 +41,7 @@ func main() {
 		fmt.Println(printable(fmt.Sprintf(">> Separators %v", separators)))
 	}
 	fmt.Println(strings.Repeat(".", 80))
+	log.Println(">> Prepare mutations..\n")
 
 	// generate needles
 	var needles []string
@@ -49,32 +53,62 @@ func main() {
 	// split to parts based on separator
 	var sepNeedles []string
 	for _, sep := range separators {
+		time.Sleep(1 * time.Millisecond)
+		log.Printf("%s> generate mutations with separator `%s`..", CLR, sep)
+
 		separr := splitBySeparator(data, sep)
-		needles = append(needles, separr...)
+		sepNeedles = append(sepNeedles, separr...)
+
+		// replace detected separators
 		for _, detectedSep := range detectedSeparators {
+			time.Sleep(1 * time.Millisecond)
+			log.Printf("%s> generate mutations with detected seperator `%s`..", CLR, detectedSep)
 			if detectedSep == sep {
 				continue
 			}
-			sepNeedles = append(sepNeedles, mutateWithSeparator(needles, detectedSep, sep)...)
-			fmt.Println(detectedSep, sep)
+			sepNeedles = append(sepNeedles, mutateWithSeparator(sepNeedles, detectedSep, sep)...)
+			// fmt.Println(detectedSep, sep)
+		}
+
+		// add simple separators
+		for _, s := range needles {
+			log.Printf("%s> generate mutations for newith all separators..", CLR)
+			var arr []string
+			for _, r := range []rune(s) {
+				arr = append(arr, string(r))
+			}
+			s2 := strings.Join(arr, sep)
+			sepNeedles = append(sepNeedles, s2)
 		}
 	}
 	needles = append(needles, sepNeedles...)
+
+	//
 
 	// final touch
 	needles = append(needles, addSuffixes(needles, []string{"\n", "\r", "\r\n", "\n\r"})...)
 	needles = uniqueSlice(needles)
 
-	N := len(hash)
-	for _, s := range needles {
+	needleCount := len(needles)
+	printStep := int(math.Floor(float64(needleCount) / 100.0))
+	log.Println(">> LET'S GOooo!")
+	fmt.Printf("==> %d to check\n", needleCount)
+	fmt.Println(strings.Repeat(".", 80))
 
-		if len(s) > 5 && strings.Contains(s, "|") {
-			fmt.Println("########### " + s)
+	N := len(hash)
+	for i, s := range needles {
+		if i%printStep == 0 {
+			time.Sleep(1 * time.Millisecond)
+			log.Printf("[%d/%d] %s", i, needleCount, s)
 		}
 
 		// hashesh to check
 		hashes := []string{
+			// hashMD4(s),
 			hashMD5(s),
+			hashSHA1(s),
+			hashSHA256(s),
+			hashSHA512(s),
 		}
 
 		// if source hash is shorter
@@ -166,6 +200,7 @@ func splitBySeparator(s, sep string) []string {
 func mutateWithSeparator(combinations []string, splitBySep, sep string) []string {
 	var mutations []string
 	for _, s := range combinations {
+		time.Sleep(1 * time.Millisecond)
 		parts := strings.Split(s, splitBySep)
 		mutations = append(mutations, strings.Join(parts, sep))
 		mutations = append(mutations, strings.Join(parts, sep)+sep)

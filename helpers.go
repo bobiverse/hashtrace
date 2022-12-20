@@ -2,6 +2,9 @@ package main
 
 import (
 	"crypto/md5"
+	"crypto/sha1"
+	"crypto/sha256"
+	"crypto/sha512"
 	"fmt"
 	"strings"
 	"unicode/utf8"
@@ -41,7 +44,21 @@ func uniqueSlice(arr []string) []string {
 	return filtered
 }
 
+// func hashMD4(s string) string {
+// 	return fmt.Sprintf("%x", md4.Sum([]byte(s)))
+// }
 func hashMD5(s string) string {
-	buf := md5.Sum([]byte(s))
-	return fmt.Sprintf("%x", buf)
+	return fmt.Sprintf("%x", md5.Sum([]byte(s)))
+}
+
+func hashSHA1(s string) string {
+	return fmt.Sprintf("%x", sha1.Sum([]byte(s)))
+}
+
+func hashSHA256(s string) string {
+	return fmt.Sprintf("%x", sha256.Sum256([]byte(s)))
+}
+
+func hashSHA512(s string) string {
+	return fmt.Sprintf("%x", sha512.Sum512([]byte(s)))
 }
