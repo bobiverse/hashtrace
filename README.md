@@ -2,7 +2,7 @@
 trye to guess hash based on given content
 
 ```bash
-./hashguess -hash='90b76b4e' -data='firetruck' -sep=','
+./hashguess -hash='90b76b4e' -data='firetruck' -sep=',' -sep=';' -sep='|'
 ................................................................................
 >> 90b76b4e
 >> firetruck
