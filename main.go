@@ -20,6 +20,15 @@ const (
 	ClrPurple = "\033[35m"
 	ClrCyan   = "\033[36m"
 	ClrWhite  = "\033[37m"
+
+	ClrBgBlack  = "\033[40m"
+	ClrBgRed    = "\033[41m"
+	ClrBgGreen  = "\033[42m"
+	ClrBgYellow = "\033[43m"
+	ClrBgBlue   = "\033[44m"
+	ClrBgPurple = "\033[45m"
+	ClrBgCyan   = "\033[46m"
+	ClrBgWhite  = "\033[47m"
 )
 
 func main() {
@@ -40,7 +49,7 @@ func main() {
 	detectedSeparators := re.FindAllString(dataItems.String(), -1)
 	if separators.IsEmpty() {
 		separators = append(separators, detectedSeparators...)
-		separators = append(separators, []string{"", "|", ",", ";", "_", "-", "/", "\n", "+", ":"}...)
+		//separators = append(separators, []string{"", "|", ",", ";", "_", "-", "/", "\n", "+", ":"}...)
 	}
 	separators = uniqueSlice(separators)
 
@@ -66,7 +75,7 @@ func main() {
 	fmt.Printf("HASH:\t %s\n", ClrGreen+expectedHash+ClrReset)
 	if foundHash != expectedHash {
 		//fmt.Printf("\t\t    FULL:\t %s\n", foundHash)
-		fmt.Printf("FULL:\t %s\n", strings.ReplaceAll(foundHash, expectedHash, ClrYellow+expectedHash+ClrReset))
+		fmt.Printf("FULL:\t %s\n", strings.ReplaceAll(foundHash, expectedHash, ClrBgGreen+ClrBlack+expectedHash+ClrReset))
 	}
 
 	fmt.Println("=========================================================================")
@@ -118,18 +127,6 @@ func addSuffixes(arr, suffixes []string) []string {
 	return arr
 }
 
-func splitBySeparator(s, sep string) []string {
-	parts := strings.Split(s, sep)
-	all := permutations(parts)
-
-	var combinations []string
-	for _, parts := range all {
-		combinations = append(combinations, strings.Join(parts, sep))
-		combinations = append(combinations, strings.Join(parts, ""))
-	}
-	return combinations
-}
-
 func mutateWithSeparator(combinations []string, splitBySep, sep string) []string {
 	var mutations []string
 	for _, s := range combinations {
@@ -141,34 +138,4 @@ func mutateWithSeparator(combinations []string, splitBySep, sep string) []string
 		mutations = append(mutations, sep+strings.Join(parts, sep)+sep)
 	}
 	return mutations
-}
-
-func permutations(arr []string) [][]string {
-	var helper func([]string, int)
-	res := [][]string{}
-
-	helper = func(arr []string, n int) {
-		if n == 1 {
-			tmp := make([]string, len(arr))
-			copy(tmp, arr)
-			res = append(res, tmp)
-			return
-		}
-
-		for i := 0; i < n; i++ {
-			helper(arr, n-1)
-			if n%2 == 1 {
-				tmp := arr[i]
-				arr[i] = arr[n-1]
-				arr[n-1] = tmp
-				continue
-			}
-
-			tmp := arr[0]
-			arr[0] = arr[n-1]
-			arr[n-1] = tmp
-		}
-	}
-	helper(arr, len(arr))
-	return res
 }

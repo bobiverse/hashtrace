@@ -2,13 +2,16 @@ package main
 
 import (
 	"errors"
+	"log"
+	"strings"
 )
 
 func CrackHash(expectedHash string, dataItems, separators []string) (string, string, error) {
 	// 1) Prepare plain and mutated data strings
-	needles := PrepareDataNeedles(dataItems)
+	needles := PrepareDataNeedles(dataItems, separators)
 
 	N := len(expectedHash)
+	log.Printf("NEEDLES: %d", N)
 
 	// 2) Hash and check
 	for _, s := range needles {
@@ -50,9 +53,18 @@ func CrackHash(expectedHash string, dataItems, separators []string) (string, str
 	return "", "", errors.New("NOT FOUND")
 }
 
-func PrepareDataNeedles(dataItems []string) []string {
+func PrepareDataNeedles(dataItems, separators []string) []string {
 	var needles []string
 
+	if len(separators) == 0 {
+		separators = []string{""}
+	}
+
+	for _, perms := range permutations(dataItems) {
+		for _, sep := range separators {
+			needles = append(needles, strings.Join(perms, sep))
+		}
+	}
 	for _, s := range dataItems {
 		needles = append(needles, s)
 		needles = append(needles, reverse(s))
@@ -60,11 +72,17 @@ func PrepareDataNeedles(dataItems []string) []string {
 		needles = append(needles, splitToNeedles(reverse(s))...)
 	}
 
-	//// glue
-	//for _, s := range data
-	//
+	// Lowercase
+	for _, s := range needles {
+		needles = append(needles, strings.ToLower(s))
+	}
 
-	// END) add suffixes
+	// Uppercase
+	for _, s := range needles {
+		needles = append(needles, strings.ToUpper(s))
+	}
+
+	// LAST) add suffixes
 	for _, s := range needles {
 		needles = append(needles, s+"\n")
 		needles = append(needles, s+"\r\n")

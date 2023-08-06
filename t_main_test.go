@@ -1,5 +1,7 @@
 package main
 
 type TestCase struct {
-	Data []string
+	ExpectedHash string
+	Data         []string
+	Separators   []string
 }

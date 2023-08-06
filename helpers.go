@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"fmt"
+	"log"
 	"strings"
 	"unicode/utf8"
 )
@@ -44,9 +45,9 @@ func uniqueSlice(arr []string) []string {
 	return filtered
 }
 
-// func hashMD4(s string) string {
-// 	return fmt.Sprintf("%x", md4.Sum([]byte(s)))
-// }
+//	func hashMD4(s string) string {
+//		return fmt.Sprintf("%x", md4.Sum([]byte(s)))
+//	}
 func hashMD5(s string) string {
 	return fmt.Sprintf("%x", md5.Sum([]byte(s)))
 }
@@ -61,4 +62,34 @@ func hashSHA256(s string) string {
 
 func hashSHA512(s string) string {
 	return fmt.Sprintf("%x", sha512.Sum512([]byte(s)))
+}
+
+func permutations(input []string) [][]string {
+	if len(input) > 4 {
+		log.Fatal("Too many permutations")
+	}
+	var result [][]string
+	heapPermutation(input, len(input), &result)
+	return result
+}
+
+func heapPermutation(input []string, size int, result *[][]string) {
+	// If size is 1, store the obtained permutation
+	if size == 1 {
+		tmp := make([]string, len(input))
+		copy(tmp, input)
+		*result = append(*result, tmp)
+	}
+
+	for i := 0; i < size; i++ {
+		heapPermutation(input, size-1, result)
+
+		// if size is odd, swap the first and last element
+		// if size is even, swap the i-th and last element
+		if size%2 == 1 {
+			input[0], input[size-1] = input[size-1], input[0]
+		} else {
+			input[i], input[size-1] = input[size-1], input[i]
+		}
+	}
 }
