@@ -25,7 +25,7 @@ func TestBasic(t *testing.T) {
 
 func TestBasicSeparators(t *testing.T) {
 	testcases := []*TestCase{
-		{ExpectedHash: "7e94122", Data: []string{"a", "b", "c", "d"}, Separators: []string{"|"}},
+		{ExpectedHash: "7e94122", Data: []string{"a", "b", "c", "d"}, Separators: []string{"", "|"}},
 	}
 
 	for _, tc := range testcases {

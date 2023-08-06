@@ -93,3 +93,24 @@ func heapPermutation(input []string, size int, result *[][]string) {
 		}
 	}
 }
+
+func combinations(arr []string) [][]string {
+	var result [][]string
+
+	n := len(arr)
+	// Total combinations would be 2^n
+	total := 1 << n
+
+	// Iterate from 1 to 2^n
+	for i := 1; i < total; i++ {
+		var subset []string
+		for j := 0; j < n; j++ {
+			// If j-th bit in i is set, add arr[j] to subset
+			if (i & (1 << j)) > 0 {
+				subset = append(subset, arr[j])
+			}
+		}
+		result = append(result, subset)
+	}
+	return result
+}
