@@ -6,6 +6,8 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"fmt"
+	"golang.org/x/crypto/ripemd160"
+	"golang.org/x/crypto/sha3"
 	"log"
 	"strings"
 	"unicode/utf8"
@@ -59,6 +61,47 @@ func hashSHA256(s string) string {
 
 func hashSHA512(s string) string {
 	return fmt.Sprintf("%x", sha512.Sum512([]byte(s)))
+}
+
+// SHA-224
+func hashSHA224(s string) string {
+	return fmt.Sprintf("%x", sha256.Sum224([]byte(s)))
+}
+
+// SHA-384
+func hashSHA384(s string) string {
+	return fmt.Sprintf("%x", sha512.Sum384([]byte(s)))
+}
+
+// SHA-512/224
+func hashSHA512_224(s string) string {
+	return fmt.Sprintf("%x", sha512.Sum512_224([]byte(s)))
+}
+
+// SHA-512/256
+func hashSHA512_256(s string) string {
+	return fmt.Sprintf("%x", sha512.Sum512_256([]byte(s)))
+}
+
+// SHA3-256
+func hashSHA3_256(s string) string {
+	hash := sha3.New256()
+	hash.Write([]byte(s))
+	return fmt.Sprintf("%x", hash.Sum(nil))
+}
+
+// SHA3-512
+func hashSHA3_512(s string) string {
+	hash := sha3.New512()
+	hash.Write([]byte(s))
+	return fmt.Sprintf("%x", hash.Sum(nil))
+}
+
+// RIPEMD-160
+func hashRIPEMD160(s string) string {
+	hash := ripemd160.New()
+	hash.Write([]byte(s))
+	return fmt.Sprintf("%x", hash.Sum(nil))
 }
 
 func permutations(input []string) [][]string {

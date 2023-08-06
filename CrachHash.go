@@ -25,6 +25,12 @@ func CrackHash(expectedHash string, dataItems, separators []string) (string, str
 			hashSHA1(s),
 			hashSHA256(s),
 			hashSHA512(s),
+			hashSHA224(s),
+			hashSHA384(s),
+			hashSHA3_256(s),
+			hashSHA3_512(s),
+			hashSHA512_224(s),
+			hashSHA512_256(s),
 		}
 
 		for _, checkHash := range hashes {
