@@ -49,8 +49,9 @@ func main() {
 	detectedSeparators := re.FindAllString(dataItems.String(), -1)
 	if separators.IsEmpty() {
 		separators = append(separators, detectedSeparators...)
-		//separators = append(separators, []string{"", "|", ",", ";", "_", "-", "/", "\n", "+", ":"}...)
+		separators = append(separators, []string{"|", ",", ";"}...)
 	}
+	separators = append(separators, "")
 	separators = uniqueSlice(separators)
 
 	// Used variables
@@ -58,7 +59,7 @@ func main() {
 	fmt.Println(">> " + expectedHash)
 	fmt.Println(">> " + dataItems.String() + "")
 	if len(separators) > 0 {
-		fmt.Println(printable(fmt.Sprintf(">> Separators %v", separators)))
+		fmt.Println(printable(fmt.Sprintf(">> Separators %q", separators)))
 	}
 	fmt.Println(strings.Repeat(".", 80))
 

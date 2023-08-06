@@ -32,9 +32,6 @@ func reverse(s string) string {
 func uniqueSlice(arr []string) []string {
 	mvalues := map[string]string{}
 	for _, s := range arr {
-		if s == "" {
-			continue
-		}
 		mvalues[s] = s
 	}
 
