@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"log"
+	"net/url"
 	"strings"
 )
 
@@ -84,6 +85,18 @@ func PrepareDataNeedles(dataItems, separators []string) []string {
 		needles = append(needles, reverse(s))
 		needles = append(needles, splitToNeedles(s)...)
 		needles = append(needles, splitToNeedles(reverse(s))...)
+	}
+
+	// URL encoded/decoded
+	for _, s := range needles {
+		needles = append(needles, url.QueryEscape(s)) // " " => "+"
+		needles = append(needles, url.PathEscape(s))  // " " => "%20"
+
+		sDecoded, _ := url.QueryUnescape(s)
+		needles = append(needles, sDecoded)
+
+		sDecoded, _ = url.PathUnescape(s)
+		needles = append(needles, sDecoded)
 	}
 
 	// Lowercase
