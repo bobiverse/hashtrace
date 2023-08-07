@@ -27,9 +27,9 @@ HashTrace assists in unveiling the mystery behind the order and format in which 
 >> 102,John,john@example.xx
 >> Separators ["," "@" "." "|" ";" ""]
 ................................................................................
-2023/08/07 14:29:25   2895 needles for ["102" "John" "john@example.xx"]
+2023/MM/DD 14:29:25   2895 needles for ["102" "John" "john@example.xx"]
 =========================================================================
-2023/08/07 14:29:25 FOUND AT 2023-08-07 14:29:25.974850844 +0300 EEST m=+0.043376867
+2023/MM/DD 14:29:25 FOUND AT 2023-MM-DD 14:29:25.97485MM44 +0300 EEST m=+0.043376867
 PLAIN:  "john|102|john@example.xx\n"
 HASH:    e6efffb4b33f8
 FULL:    e84be6efffb4b33f8dabbc725e7e1d78
