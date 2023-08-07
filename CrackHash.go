@@ -69,6 +69,16 @@ func PrepareDataNeedles(dataItems, separators []string) []string {
 		separators = []string{""}
 	}
 
+	// glue all data items in one string and generate needles
+	if len(dataItems) > 1 {
+		needles = append(needles, PrepareDataNeedles([]string{strings.Join(dataItems, "")}, separators)...)
+	}
+
+	// add reversed too
+	for _, s := range dataItems {
+		dataItems = append(dataItems, reverse(s))
+	}
+
 	// permutations: same length
 	for _, perms := range permutations(dataItems) {
 		for _, sep := range separators {
@@ -87,10 +97,7 @@ func PrepareDataNeedles(dataItems, separators []string) []string {
 
 	// basic transformations
 	for _, s := range dataItems {
-		needles = append(needles, s)
-		needles = append(needles, reverse(s))
 		needles = append(needles, splitToNeedles(s)...)
-		needles = append(needles, splitToNeedles(reverse(s))...)
 	}
 
 	// URL encoded/decoded
