@@ -18,6 +18,7 @@ HashTrace assists in unveiling the mystery behind the order and format in which 
 ## Usage
 ```bash
 ./hashtrace -hash='e6efffb4b33f8' -data=102 -data=John --data=john@example.xx
+# ./hashtrace -hash='e6efffb4b33f8' -data=102 -data=John --data=john@example.xx -sep=';' -sep='|' -sep=',' 
 ```
 
 ```bash
