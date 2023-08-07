@@ -1,6 +1,8 @@
 # hashtrace
 _HashTrace_ is a utility designed to guess the hash based on provided content fragments.
 
+By iterating through common combinations, HashTrace provides insights into the robustness of hash generation, revealing vulnerabilities in weak or poorly created hashes.
+
 ## Description
 Sometimes, we're handed a piece of the puzzle: a partial hash or scattered content fragments without context.
 HashTrace bridges this information gap, helping to derive the potential plaintext that these fragments might represent.
