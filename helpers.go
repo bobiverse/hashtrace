@@ -154,3 +154,19 @@ func combinations(arr []string) [][]string {
 	}
 	return result
 }
+
+func makeHashes(s string) []string {
+	return []string{
+		//hashMD4(s),
+		hashMD5(s),
+		hashSHA1(s),
+		hashSHA256(s),
+		hashSHA512(s),
+		hashSHA224(s),
+		hashSHA384(s),
+		hashSHA3_256(s),
+		hashSHA3_512(s),
+		hashSHA512_224(s),
+		hashSHA512_256(s),
+	}
+}
