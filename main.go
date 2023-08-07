@@ -41,7 +41,7 @@ func main() {
 	flag.Parse()
 
 	if expectedHash == "" || dataItems.IsEmpty() {
-		log.Fatalf("Usage:\n\t./hashguess -expectedHash='90b76b4e' -data='firetruck' -sep=','\n")
+		log.Fatalf("Usage:\n\t./hashtrace -hash='90b76b4e' -data='firetruck'\n\t./hashtrace -hash='76b4e78167' -data=truck -data=my --data=fire -sep=','\n")
 	}
 
 	// Separators
@@ -75,7 +75,7 @@ func main() {
 	fmt.Printf("PLAIN:\t%s%q%s\n", ClrGreen, foundPlain, ClrReset)
 	fmt.Printf("HASH:\t %s\n", ClrGreen+expectedHash+ClrReset)
 	if foundHash != expectedHash {
-		//fmt.Printf("\t\t    FULL:\t %s\n", foundHash)
+		// fmt.Printf("\t\t    FULL:\t %s\n", foundHash)
 		fmt.Printf("FULL:\t %s\n", strings.ReplaceAll(foundHash, expectedHash, ClrBgGreen+ClrBlack+expectedHash+ClrReset))
 	}
 
