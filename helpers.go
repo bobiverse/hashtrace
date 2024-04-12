@@ -105,7 +105,7 @@ func hashRIPEMD160(s string) string {
 }
 
 func permutations(input []string) [][]string {
-	if len(input) > 4 {
+	if len(input) > 10 {
 		log.Fatal("Too many permutations")
 	}
 	var result [][]string
